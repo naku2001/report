@@ -21,7 +21,7 @@ spring:
 springdoc:
   show-actuator: true
   paths-to-match: /**
-  packages-to-scan: zw.co.afrosoft
+  packages-to-scan: com.example.report
 
 management:
   endpoint:
@@ -41,15 +41,15 @@ logging:
 
 jwt:
   secretKey: secret
-  issuer: afrosoft.co.zw
+  issuer: perfect.makuwerere@students.uz.ac.zw
   expirationMinute: 10
 
 swagger:
   contact-name: Perfect Makuwerere
-  contact-mail: perfect.makuwerere@afrosoft.co.zw
+  contact-mail: perfect.makuwerere@students.uz.ac.zw
   contact-url:
-  app-name: INNOVATION
-  app-description: "LETS INNOVATE"
+  app-name: Reports-Capstone-Project
+  app-description: "Lets Build Stuff"
   app-version: 2.0.0
   app-license-url: https://www.apache.org/licenses/LICENSE-2.0.html
   app-license: Apache 2.0
