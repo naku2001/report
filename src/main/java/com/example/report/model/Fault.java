@@ -24,5 +24,6 @@ public class Fault {
     private FaultCategories faultCategories;
     private String image;
     private LocalDateTime dateTime;
+    private Status status;
 
 }

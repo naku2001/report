@@ -19,6 +19,26 @@ private final FaultService faultService;
 public ResponseEntity reportFault(@RequestBody ReportRequest request){
         return faultService.reportFault(request);
     }
+@DeleteMapping("/delete/{id}")
+public  ResponseEntity deleteFault(@PathVariable Long id){
+    return faultService.deleteFault(id);
+}
+@GetMapping("getAll")
+public ResponseEntity getAll(){
+    return  faultService.getAll();
+}
+@PutMapping("/update/{id}")
+public ResponseEntity updateFault(@PathVariable Long id, @RequestBody ReportRequest request){
+    return faultService.updateFault(id,request);
+}
+@GetMapping("/getById/{id}")
+public ResponseEntity getById(@PathVariable Long id){
+        return  faultService.getById(id);
+    }
+
+
+
+
 
 
 }

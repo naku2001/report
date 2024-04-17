@@ -9,4 +9,14 @@ import org.springframework.stereotype.Service;
 @Component
 public interface FaultService {
     ResponseEntity reportFault(ReportRequest request);
+
+
+    ResponseEntity deleteFault(Long id);
+
+    ResponseEntity getAll();
+
+    ResponseEntity updateFault(Long id,ReportRequest request);
+
+
+    ResponseEntity getById(Long id);
 }
