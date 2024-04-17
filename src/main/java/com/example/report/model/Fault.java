@@ -25,5 +25,8 @@ public class Fault {
     private String image;
     private LocalDateTime dateTime;
     private Status status;
+    private Crew crew;
+    private  Priority priority;
+    private String location;
 
 }
