@@ -37,6 +37,7 @@ public class FaultServiceImpl implements FaultService {
         fault.setFaultCategories(request.getFaultCategories());
         fault.setDetails(request.getDetails());
         fault.setDateTime(LocalDateTime.now());
+        fault.setImage(request.getImage());
         Fault postedFault = faultRepo.save(fault);
         return ResponseEntity.ok().body(postedFault);
     }

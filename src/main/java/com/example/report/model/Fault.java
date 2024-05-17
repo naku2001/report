@@ -27,7 +27,6 @@ public class Fault  {
     private FaultCategories faultCategories;
     private LocalDateTime dateTime;
     private Status status;
-    @ManyToOne
-    private Image image;
+    private String image;
 
 }
