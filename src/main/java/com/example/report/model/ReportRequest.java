@@ -15,4 +15,6 @@ public class ReportRequest {
     private Status status;
     private String image;
     private LocalDateTime dateTime;
+    private String location;
+    private Recipient recipient;
 }
