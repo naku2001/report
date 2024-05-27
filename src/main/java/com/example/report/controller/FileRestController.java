@@ -1,11 +1,11 @@
 package com.example.report.controller;
 
-import com.example.report.model.Image;
-import com.example.report.model.ReportRequest;
-import com.example.report.model.SystemConstants;
+import com.example.report.model.*;
+import com.example.report.repo.FaultRepo;
 import com.example.report.repo.ImageRepo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.persistence.Lob;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.security.SecureRandom;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @CrossOrigin
@@ -26,23 +27,23 @@ import java.util.Objects;
 public class FileRestController {
 //    private final FileService fileService;
     private final ImageRepo fileRepository;
+    private final FaultRepo faultRepo;
 
 
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ApiResponse(responseCode = "200", description = "File uploaded successfully")
     @Operation(summary = "Upload file")
-
-    public ResponseEntity uploadFile(@RequestParam MultipartFile file) {
+    public ResponseEntity uploadFile(ReportRequest request) {
         String uploadRootPath = new java.io.File(SystemConstants.pictureFolderUrl).getAbsolutePath();
         java.io.File uploadRootDir = new java.io.File(uploadRootPath);
         Image savedFile = new Image();
         if (!uploadRootDir.exists()) {
             uploadRootDir.mkdirs();
         }
-        if (Objects.nonNull(file)) {
+        if (Objects.nonNull(request.getImage())) {
             try {
 
-                String nm = file.getOriginalFilename()
+                String nm = request.getImage().getOriginalFilename()
                         .replace(" ", "")
                         .replace("-", "");
                 String filename = generateRandomString(10).concat(nm);
@@ -50,7 +51,7 @@ public class FileRestController {
                 java.io.File serverFile = new java.io.File(uploadRootDir.getPath() +
                         java.io.File.separator + filename);
                 BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
-                stream.write(file.getBytes());
+                stream.write(request.getImage().getBytes());
                 stream.close();
                 savedFile = fileRepository.save(Image.builder()
                         .location(tempUrl)
@@ -61,8 +62,17 @@ public class FileRestController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
             }
         }
+        Fault fault = new Fault();
+        fault.setStatus(Status.RECEIVED);
+        fault.setFaultCategories(request.getFaultCategories());
+        fault.setDetails(request.getDetails());
+        fault.setDateTime(LocalDateTime.now());
+        fault.setImage(savedFile.getLocation());
+        fault.setLocation(request.getLocation());
+        fault.setRecipient(request.getRecipient());
+        Fault postedFault = faultRepo.save(fault);
+        return ResponseEntity.ok().body(postedFault);
 
-        return ResponseEntity.ok().body(savedFile);
 
     }
     public String generateRandomString(int length) {
