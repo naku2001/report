@@ -28,7 +28,8 @@ public class Fault  {
     private LocalDateTime dateTime;
     private Status status;
     private String image;
-    private String location;
+    private String longitude;
+    private String latitude;
     private Recipient recipient;
 
 }
