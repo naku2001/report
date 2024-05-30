@@ -16,7 +16,7 @@ public class ReportRequest {
     private String details;
     private FaultCategories faultCategories;
     private Status status;
-    private MultipartFile image;
+    private String image;
 //    private LocalDateTime dateTime;
     private String location;
     private Recipient recipient;

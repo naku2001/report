@@ -34,46 +34,17 @@ public class FileRestController {
     private final FaultRepo faultRepo;
 
 
-    @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping("/create")
     @ApiResponse(responseCode = "200", description = "File uploaded successfully")
     @Operation(summary = "Upload file")
     public ResponseEntity uploadFile(ReportRequest request) throws IOException {
-        String uploadRootPath = new java.io.File(SystemConstants.pictureFolderUrl).getAbsolutePath();
-        java.io.File uploadRootDir = new java.io.File(uploadRootPath);
-        Image savedFile = new Image();
-        if (!uploadRootDir.exists()) {
-            uploadRootDir.mkdirs();
-        }
-        if (Objects.nonNull(request.getImage())) {
-            try {
 
-                String nm = request.getImage().getOriginalFilename()
-                        .replace(" ", "")
-                        .replace("-", "");
-                String filename = generateRandomString(10).concat(nm);
-                String tempUrl = SystemConstants.pictureFolderUrl.concat(filename);
-                java.io.File serverFile = new java.io.File(uploadRootDir.getPath() +
-                        java.io.File.separator + filename);
-                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
-                stream.write(request.getImage().getBytes());
-                stream.close();
-                savedFile = fileRepository.save(Image.builder()
-                        .location(tempUrl)
-                        .fileName(filename)
-                        .build());
-            } catch (Exception e) {
-                e.printStackTrace();
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-            }
-        }
-        byte[] fileContent = FileUtils.readFileToByteArray(new File(savedFile.getLocation()));
-        String encodedString = getBase64StringWithPadding(fileContent);
         Fault fault = new Fault();
         fault.setStatus(Status.RECEIVED);
         fault.setFaultCategories(request.getFaultCategories());
         fault.setDetails(request.getDetails());
         fault.setDateTime(LocalDateTime.now());
-        fault.setImage(encodedString);
+        fault.setImage(request.getImage());
         fault.setLongitude(request.getLongitude());
         fault.setLatitude(request.getLatitude());
         fault.setRecipient(request.getRecipient());
