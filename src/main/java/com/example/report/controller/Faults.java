@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.Objects;
 
-@CrossOrigin
+@CrossOrigin(origins="*")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/faults")
@@ -41,6 +41,11 @@ public  ResponseEntity deleteFault(@PathVariable Long id){
 public ResponseEntity getAll(){
     return  faultService.getAll();
 }
+
+@GetMapping("hello")
+public String hello(){
+        return  "HelloWorld";
+    }
 @PutMapping("/update/{id}")
 public ResponseEntity updateFault(@PathVariable Long id, @RequestBody ReportRequest request){
     return faultService.updateFault(id,request);

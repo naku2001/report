@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.persistence.Lob;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,10 +25,11 @@ import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.Objects;
 
-@CrossOrigin
+@CrossOrigin(origins="*")
 @RestController
 @RequestMapping("/file")
 @RequiredArgsConstructor
+@Slf4j
 public class FileRestController {
 //    private final FileService fileService;
     private final ImageRepo fileRepository;
@@ -37,8 +39,9 @@ public class FileRestController {
     @PostMapping("/create")
     @ApiResponse(responseCode = "200", description = "File uploaded successfully")
     @Operation(summary = "Upload file")
-    public ResponseEntity uploadFile(ReportRequest request) throws IOException {
 
+    public ResponseEntity uploadFile(ReportRequest request) throws IOException {
+log.info("Request has --------{}",request);
         Fault fault = new Fault();
         fault.setStatus(Status.RECEIVED);
         fault.setFaultCategories(request.getFaultCategories());

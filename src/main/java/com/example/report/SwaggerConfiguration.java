@@ -78,16 +78,16 @@ public class SwaggerConfiguration {
 
 		return info;
 	}
-	@Bean
-	CorsConfigurationSource corsConfigurationSource(){
-		CorsConfiguration corsConfiguration = new CorsConfiguration();
-		corsConfiguration.addAllowedHeader("*");
-		corsConfiguration.addAllowedMethod("*");
-		corsConfiguration.addAllowedOrigin("*");
-		UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
-		urlBasedCorsConfigurationSource.registerCorsConfiguration("/**" , corsConfiguration);
-		return urlBasedCorsConfigurationSource;
-
-	}
+//	@Bean
+//	CorsConfigurationSource corsConfigurationSource(){
+//		CorsConfiguration corsConfiguration = new CorsConfiguration();
+//		corsConfiguration.addAllowedHeader("*");
+//		corsConfiguration.addAllowedMethod("*");
+//		corsConfiguration.addAllowedOrigin("*");
+//		UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
+//		urlBasedCorsConfigurationSource.registerCorsConfiguration("/**" , corsConfiguration);
+//		return urlBasedCorsConfigurationSource;
+//
+//	}
 
 }

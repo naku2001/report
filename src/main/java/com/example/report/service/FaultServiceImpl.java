@@ -33,16 +33,17 @@ public class FaultServiceImpl implements FaultService {
     @Override
     public ResponseEntity reportFault(ReportRequest request)  {
 
-        Fault fault = new Fault();
-        fault.setStatus(Status.RECEIVED);
-        fault.setFaultCategories(request.getFaultCategories());
-        fault.setDetails(request.getDetails());
-        fault.setDateTime(LocalDateTime.now());
-        fault.setImage(request.getImage().getContentType());
-//        fault.setLocation(request.getLocation());
-        fault.setRecipient(request.getRecipient());
-        Fault postedFault = faultRepo.save(fault);
-        return ResponseEntity.ok().body(postedFault);
+//        Fault fault = new Fault();
+//        fault.setStatus(Status.RECEIVED);
+//        fault.setFaultCategories(request.getFaultCategories());
+//        fault.setDetails(request.getDetails());
+//        fault.setDateTime(LocalDateTime.now());
+//        fault.
+////        fault.setImage(request.getImage().getContentType());
+//////        fault.setLocation(request.getLocation());
+////        fault.setRecipient(request.getRecipient());
+//        Fault postedFault = faultRepo.save(fault);
+        return ResponseEntity.ok().body(null);
     }
 
     @Override
