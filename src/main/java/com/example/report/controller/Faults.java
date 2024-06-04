@@ -3,6 +3,7 @@ package com.example.report.controller;
 
 import com.example.report.model.Image;
 import com.example.report.model.ReportRequest;
+import com.example.report.model.Request;
 import com.example.report.model.SystemConstants;
 import com.example.report.repo.ImageRepo;
 import com.example.report.service.FaultService;
@@ -47,7 +48,7 @@ public String hello(){
         return  "HelloWorld";
     }
 @PutMapping("/update/{id}")
-public ResponseEntity updateFault(@PathVariable Long id, @RequestBody ReportRequest request){
+public ResponseEntity updateFault(@PathVariable Long id, @RequestBody Request request){
     return faultService.updateFault(id,request);
 }
 @GetMapping("/getById/{id}")

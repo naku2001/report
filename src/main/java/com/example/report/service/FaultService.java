@@ -1,6 +1,7 @@
 package com.example.report.service;
 
 import com.example.report.model.ReportRequest;
+import com.example.report.model.Request;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ public interface FaultService {
 
     ResponseEntity getAll();
 
-    ResponseEntity updateFault(Long id,ReportRequest request);
+    ResponseEntity updateFault(Long id, Request request);
 
 
     ResponseEntity getById(Long id);

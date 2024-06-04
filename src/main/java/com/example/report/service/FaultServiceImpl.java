@@ -62,14 +62,14 @@ public class FaultServiceImpl implements FaultService {
     }
 
     @Override
-    public ResponseEntity updateFault(Long id, ReportRequest request) {
+    public ResponseEntity updateFault(Long id, Request request) {
         Optional<Fault> fault = faultRepo.findById(id);
         if(!fault.isPresent())
             return ResponseEntity.ok().body("Fault not found");
         Fault faultUpdate = fault.get();
-        faultUpdate.setStatus(Status.RECEIVED);
-        faultUpdate.setFaultCategories(request.getFaultCategories());
-        faultUpdate.setDetails(request.getDetails());
+        faultUpdate.setStatus(request.getStatus());
+//        faultUpdate.setFaultCategories(request.getFaultCategories());
+//        faultUpdate.setDetails(request.getDetails());
         Fault faultUpdated = faultRepo.save(faultUpdate);
         return ResponseEntity.ok().body(faultUpdated);
 
