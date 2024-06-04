@@ -20,6 +20,4 @@ public class ReportRequest {
 //    private LocalDateTime dateTime;
     private String location;
     private Recipient recipient;
-    private  String latitude;
-    private String Longitude;
 }

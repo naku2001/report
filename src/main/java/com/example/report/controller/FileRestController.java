@@ -7,8 +7,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.persistence.Lob;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,39 +15,60 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.BufferedOutputStream;
-import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
-import java.util.Base64;
 import java.util.Objects;
 
-@CrossOrigin(origins="*")
+@CrossOrigin
 @RestController
 @RequestMapping("/file")
 @RequiredArgsConstructor
-@Slf4j
 public class FileRestController {
 //    private final FileService fileService;
     private final ImageRepo fileRepository;
     private final FaultRepo faultRepo;
 
 
-    @PostMapping("/create")
+    @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ApiResponse(responseCode = "200", description = "File uploaded successfully")
     @Operation(summary = "Upload file")
+    public ResponseEntity uploadFile(ReportRequest request) {
+        String uploadRootPath = new java.io.File(SystemConstants.pictureFolderUrl).getAbsolutePath();
+        java.io.File uploadRootDir = new java.io.File(uploadRootPath);
+        Image savedFile = new Image();
+        if (!uploadRootDir.exists()) {
+            uploadRootDir.mkdirs();
+        }
+        if (Objects.nonNull(request.getImage())) {
+            try {
 
-    public ResponseEntity uploadFile(ReportRequest request) throws IOException {
-log.info("Request has --------{}",request);
+                String nm = request.getImage().getOriginalFilename()
+                        .replace(" ", "")
+                        .replace("-", "");
+                String filename = generateRandomString(10).concat(nm);
+                String tempUrl = SystemConstants.pictureFolderUrl.concat(filename);
+                java.io.File serverFile = new java.io.File(uploadRootDir.getPath() +
+                        java.io.File.separator + filename);
+                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
+                stream.write(request.getImage().getBytes());
+                stream.close();
+                savedFile = fileRepository.save(Image.builder()
+                        .location(tempUrl)
+                        .fileName(filename)
+                        .build());
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            }
+        }
         Fault fault = new Fault();
         fault.setStatus(Status.RECEIVED);
         fault.setFaultCategories(request.getFaultCategories());
         fault.setDetails(request.getDetails());
         fault.setDateTime(LocalDateTime.now());
-        fault.setImage(request.getImage());
-        fault.setLongitude(request.getLongitude());
-        fault.setLatitude(request.getLatitude());
+        fault.setImage(savedFile.getLocation());
+        fault.setLocation(request.getLocation());
         fault.setRecipient(request.getRecipient());
         Fault postedFault = faultRepo.save(fault);
         return ResponseEntity.ok().body(postedFault);
@@ -66,14 +85,6 @@ log.info("Request has --------{}",request);
             sb.append(chars.charAt(rnd.nextInt(chars.length())));
         return sb.toString();
 
-    }
-    private static String getBase64StringWithPadding(byte[] bytes) {
-        String base64 = Base64.getEncoder().encodeToString(bytes);
-        int padding = base64.length() % 4;
-        if (padding > 0) {
-            base64 += "====".substring(0, 4 - padding);
-        }
-        return base64;
     }
 
 }
