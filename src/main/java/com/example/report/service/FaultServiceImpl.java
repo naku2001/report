@@ -45,6 +45,11 @@ public class FaultServiceImpl implements FaultService {
         faultRepo.deleteById(fault.get().getId());
         return ResponseEntity.ok().body(fault);
     }
+    @Override
+    public ResponseEntity getAllFaults() {
+        List<Fault> faultList = faultRepo.findAll();
+        return ResponseEntity.ok().body(faultList);
+    }
 
     @Override
     public ResponseEntity getAll() {
@@ -57,6 +62,49 @@ public class FaultServiceImpl implements FaultService {
         List<Fault> faultList = faultRepo.findAll();
         faultList.stream().filter(fault -> fault.getZesaCategories().equals(ZesaCategories.values()));
         return ResponseEntity.ok().body(faultList);
+    }
+
+    @Override
+    public ResponseEntity pendingZesa() {
+        List<Fault> faultList = faultRepo.findAll();
+      List<Fault> list =  faultList.stream().filter(fault -> fault.getZesaCategories().equals(ZesaCategories.values())).toList();
+      Long number = list.stream().filter(fault -> fault.getStatus().equals(Status.UNDER_INVESTIGATION)).count();
+      return ResponseEntity.ok().body(number);
+    }
+    @Override
+    public ResponseEntity resolvedZesa() {
+        List<Fault> faultList = faultRepo.findAll();
+        List<Fault> list =  faultList.stream().filter(fault -> fault.getZesaCategories().equals(ZesaCategories.values())).toList();
+        Long number = list.stream().filter(fault -> fault.getStatus().equals(Status.RESOLVED)).count();
+        return ResponseEntity.ok().body(number);
+    }
+    @Override
+    public ResponseEntity recievedZesa() {
+        List<Fault> faultList = faultRepo.findAll();
+        List<Fault> list =  faultList.stream().filter(fault -> fault.getZesaCategories().equals(ZesaCategories.values())).toList();
+        Long number = list.stream().count();
+        return ResponseEntity.ok().body(number);
+    }
+    @Override
+    public ResponseEntity pendingMuni() {
+        List<Fault> faultList = faultRepo.findAll();
+        List<Fault> list =  faultList.stream().filter(fault -> fault.getFaultCategories().equals(FaultCategories.values())).toList();
+        Long number = list.stream().filter(fault -> fault.getStatus().equals(Status.UNDER_INVESTIGATION)).count();
+        return ResponseEntity.ok().body(number);
+    }
+    @Override
+    public ResponseEntity resolvedMuni() {
+        List<Fault> faultList = faultRepo.findAll();
+        List<Fault> list =  faultList.stream().filter(fault -> fault.getFaultCategories().equals(FaultCategories.values())).toList();
+        Long number = list.stream().filter(fault -> fault.getStatus().equals(Status.RESOLVED)).count();
+        return ResponseEntity.ok().body(number);
+    }
+    @Override
+    public ResponseEntity recievedMuni() {
+        List<Fault> faultList = faultRepo.findAll();
+        List<Fault> list =  faultList.stream().filter(fault -> fault.getFaultCategories().equals(FaultCategories.values())).toList();
+        Long number = list.stream().count();
+        return ResponseEntity.ok().body(number);
     }
 
     @Override

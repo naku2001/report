@@ -18,9 +18,23 @@ public interface FaultService {
 
     ResponseEntity deleteFault(Long id);
 
+    ResponseEntity getAllFaults();
+
     ResponseEntity getAll();
 
     ResponseEntity getAllZesa();
+
+    ResponseEntity pendingZesa();
+
+    ResponseEntity resolvedZesa();
+
+    ResponseEntity recievedZesa();
+
+    ResponseEntity pendingMuni();
+
+    ResponseEntity resolvedMuni();
+
+    ResponseEntity recievedMuni();
 
     ResponseEntity updateFault(Long id, Request request);
 

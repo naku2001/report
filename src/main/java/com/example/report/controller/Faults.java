@@ -29,11 +29,39 @@ public class Faults {
 private final FaultService faultService;
 
 private final ImageRepo fileRepository;
-
+    @GetMapping("getAllMuniPending")
+    public ResponseEntity getAllMP(){
+        return  faultService.pendingMuni();
+    }
+    @GetMapping("getAllMuniRecieved")
+    public ResponseEntity getAllMR(){
+        return  faultService.recievedMuni();
+    }
+    @GetMapping("getAllMuniResolved")
+    public ResponseEntity getAllMResolved(){
+        return  faultService.resolvedMuni();
+    }
+    @GetMapping("getAllZesaPending")
+    public ResponseEntity getAllZP(){
+        return  faultService.pendingZesa();
+    }
+    @GetMapping("getAllMuniRecieved")
+    public ResponseEntity getAllZR(){
+        return  faultService.recievedZesa();
+    }
+    @GetMapping("getAllMuniResolved")
+    public ResponseEntity getAllZResolved(){
+        return  faultService.resolvedZesa();
+    }
+    @GetMapping("getAllFaults")
+    public ResponseEntity getAllFaults(){
+        return  faultService.getAllFaults();
+    }
 @PostMapping("report")
 public ResponseEntity reportFault(@RequestBody ReportRequest request) throws IOException {
     return faultService.reportFault(request);
     }
+
 @DeleteMapping("/delete/{id}")
 public  ResponseEntity deleteFault(@PathVariable Long id){
     return faultService.deleteFault(id);
