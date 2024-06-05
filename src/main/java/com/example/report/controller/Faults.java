@@ -45,11 +45,11 @@ private final ImageRepo fileRepository;
     public ResponseEntity getAllZP(){
         return  faultService.pendingZesa();
     }
-    @GetMapping("getAllMuniRecieved")
+    @GetMapping("getAllZesaRecieved")
     public ResponseEntity getAllZR(){
         return  faultService.recievedZesa();
     }
-    @GetMapping("getAllMuniResolved")
+    @GetMapping("getAllZesaResolved")
     public ResponseEntity getAllZResolved(){
         return  faultService.resolvedZesa();
     }
