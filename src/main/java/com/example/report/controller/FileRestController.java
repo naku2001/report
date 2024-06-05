@@ -30,10 +30,56 @@ public class FileRestController {
     private final FaultRepo faultRepo;
 
 
-    @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/create/zesa", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ApiResponse(responseCode = "200", description = "File uploaded successfully")
     @Operation(summary = "Upload file")
-    public ResponseEntity uploadFile(ReportRequest request) {
+    public ResponseEntity uploadFile(ZesaRequest request) {
+        String uploadRootPath = new java.io.File(SystemConstants.pictureFolderUrl).getAbsolutePath();
+        java.io.File uploadRootDir = new java.io.File(uploadRootPath);
+        Image savedFile = new Image();
+        if (!uploadRootDir.exists()) {
+            uploadRootDir.mkdirs();
+        }
+        if (Objects.nonNull(request.getImage())) {
+            try {
+
+                String nm = request.getImage().getOriginalFilename()
+                        .replace(" ", "")
+                        .replace("-", "");
+                String filename = generateRandomString(10).concat(nm);
+                String tempUrl = SystemConstants.pictureFolderUrl.concat(filename);
+                java.io.File serverFile = new java.io.File(uploadRootDir.getPath() +
+                        java.io.File.separator + filename);
+                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
+                stream.write(request.getImage().getBytes());
+                stream.close();
+                savedFile = fileRepository.save(Image.builder()
+                        .location(tempUrl)
+                        .fileName(filename)
+                        .build());
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            }
+        }
+        Fault fault = new Fault();
+        fault.setStatus(Status.RECEIVED);
+        fault.setZesaCategories(request.getFaultCategories());
+        fault.setDetails(request.getDetails());
+        fault.setDateTime(LocalDateTime.now());
+        fault.setImage(savedFile.getLocation());
+        fault.setLongitude(request.getLongitude());
+        fault.setLattitude(request.getLattitude());
+        fault.setRecipient(request.getRecipient());
+        Fault postedFault = faultRepo.save(fault);
+        return ResponseEntity.ok().body(postedFault);
+
+
+    }
+    @PostMapping(value = "/create/municipality", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ApiResponse(responseCode = "200", description = "File uploaded successfully")
+    @Operation(summary = "Upload file")
+    public ResponseEntity uploadFileMunicipality(ReportRequest request) {
         String uploadRootPath = new java.io.File(SystemConstants.pictureFolderUrl).getAbsolutePath();
         java.io.File uploadRootDir = new java.io.File(uploadRootPath);
         Image savedFile = new Image();
@@ -68,7 +114,8 @@ public class FileRestController {
         fault.setDetails(request.getDetails());
         fault.setDateTime(LocalDateTime.now());
         fault.setImage(savedFile.getLocation());
-        fault.setLocation(request.getLocation());
+        fault.setLongitude(request.getLongitude());
+        fault.setLattitude(request.getLattitude());
         fault.setRecipient(request.getRecipient());
         Fault postedFault = faultRepo.save(fault);
         return ResponseEntity.ok().body(postedFault);

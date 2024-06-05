@@ -25,10 +25,12 @@ public class Fault  {
     private Long id;
     private String details;
     private FaultCategories faultCategories;
+    private  ZesaCategories zesaCategories;
     private LocalDateTime dateTime;
     private Status status;
     private String image;
-    private String location;
+    private String lattitude;
+    private String longitude;
     private Recipient recipient;
 
 }

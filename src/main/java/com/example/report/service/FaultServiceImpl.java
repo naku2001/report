@@ -3,19 +3,10 @@ package com.example.report.service;
 import com.example.report.model.*;
 import com.example.report.repo.FaultRepo;
 import com.example.report.repo.ImageRepo;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.security.SecureRandom;
-import java.time.LocalDateTime;
-import java.util.Base64;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -58,6 +49,13 @@ public class FaultServiceImpl implements FaultService {
     @Override
     public ResponseEntity getAll() {
         List<Fault> faultList = faultRepo.findAll();
+        faultList.stream().filter(fault -> fault.getZesaCategories().equals(FaultCategories.values()));
+        return ResponseEntity.ok().body(faultList);
+    }
+    @Override
+    public ResponseEntity getAllZesa() {
+        List<Fault> faultList = faultRepo.findAll();
+        faultList.stream().filter(fault -> fault.getZesaCategories().equals(ZesaCategories.values()));
         return ResponseEntity.ok().body(faultList);
     }
 

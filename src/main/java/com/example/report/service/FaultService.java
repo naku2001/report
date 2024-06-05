@@ -20,6 +20,8 @@ public interface FaultService {
 
     ResponseEntity getAll();
 
+    ResponseEntity getAllZesa();
+
     ResponseEntity updateFault(Long id, Request request);
 
 

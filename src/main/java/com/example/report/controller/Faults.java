@@ -38,11 +38,14 @@ public ResponseEntity reportFault(@RequestBody ReportRequest request) throws IOE
 public  ResponseEntity deleteFault(@PathVariable Long id){
     return faultService.deleteFault(id);
 }
-@GetMapping("getAll")
+@GetMapping("getAllMuni")
 public ResponseEntity getAll(){
     return  faultService.getAll();
 }
-
+@GetMapping("getAllZesa")
+public ResponseEntity getAllZesa(){
+        return  faultService.getAllZesa();
+    }
 @GetMapping("hello")
 public String hello(){
         return  "HelloWorld";
