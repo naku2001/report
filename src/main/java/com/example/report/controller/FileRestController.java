@@ -69,6 +69,7 @@ public class FileRestController {
         fault.setDateTime(LocalDateTime.now());
         fault.setImage(savedFile.getLocation());
         fault.setLongitude(request.getLongitude());
+
         fault.setLattitude(request.getLattitude());
         fault.setRecipient(request.getRecipient());
         Fault postedFault = faultRepo.save(fault);

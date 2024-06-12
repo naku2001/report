@@ -33,4 +33,5 @@ public class Fault  {
     private String longitude;
     private Recipient recipient;
 
+
 }
